@@ -1,5 +1,6 @@
+import Course from "./components/Course"
 const App = () => {
- const Header=({course})=>{
+ /*const Header=({course})=>{
     return <h1>{course}</h1>
   }
 
@@ -30,7 +31,7 @@ const App = () => {
       </div>
     )
   }
-
+  */
   const courses = [
     {
       name: 'Half Stack application development',
