@@ -1,20 +1,19 @@
 import { useState } from 'react'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
-  ]) 
+  const [persons, setPersons] = useState([{ name: 'Arto Hellas' }]) 
   const [newName, setNewName] = useState('')
 
   const addName=(e)=>{
     e.preventDefault()
-    const noteObject = {
-    name: newName,
+    
+  persons.find(person=>person.name===newName)? 
+    window.alert(newName + " is already added to phonebook")
+   :setPersons(persons.concat({name: newName}));
+  setNewName("")
   }
 
-  setPersons(persons.concat(noteObject))
-  setNewName('')
-  }
+
   const handleNameChange = (e) => {
     setNewName(e.target.value)
   }
