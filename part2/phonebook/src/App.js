@@ -16,11 +16,16 @@ const App = () => {
   },[])
 
   const addNewPerson=(e)=>{
-    e.preventDefault()
+    e.preventDefault();
+    const newObj={
+      name: newName,
+      number: newNumber
+    }
     
   persons.find(person=>person.name===newName)? 
   window.alert(newName + " is already added to phonebook")
-  :setPersons(persons.concat({name: newName, number: newNumber}));
+  :axios.post('http://localhost:3001/persons',newObj)
+  .then(Response=>setPersons(persons.concat(Response.data)));
   setNewName("")
   setNumber("")
   }
