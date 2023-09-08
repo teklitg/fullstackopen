@@ -28,7 +28,7 @@ const App = () => {
   window.alert(newName + " is already added to phonebook")
   :setPersons(persons.concat(newOb));
 
-  personServices.update()
+  personServices.create()
   setNewName("")
   setNumber("")
   }
