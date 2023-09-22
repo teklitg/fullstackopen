@@ -21,4 +21,4 @@ const remove =(id)=>{
   return requst
 }
 
-export default ({getAll, create, update, remove})
+export default {getAll, create, update, remove}

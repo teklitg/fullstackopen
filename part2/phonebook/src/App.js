@@ -13,19 +13,30 @@ const App = () => {
 
   useEffect(()=>{
     personServices.getAll()
-    .then(Response=>
-    setPersons(Response.data))
+      .then(Response=> setPersons(Response.data))
   },[])
 
   const addNewPerson=(e)=>{
-    e.preventDefault()
+           e.preventDefault()
 
-    const newOb = { name : newName, number: newNumber }
-    
-    persons.find(person=>person.name===newName)? 
-    window.alert(newName + " is already added to phonebook")
-    :setPersons(persons.concat(newOb));
-    personServices.create(newOb);
+           const newOb = { name : newName, number: newNumber }
+
+           if (persons.find(person=>person.name===newName)) {
+
+             window.alert(newName + " is already added to phonebook, replace the old number with new one ?")
+             
+             const inOb= persons.filter(person=>person.name===newName)
+             const updatePerson = {...inOb[0], number :newNumber}
+             const updatesID = updatePerson.id
+
+             personServices.update(updatesID, updatePerson)
+               .then(()=>setPersons(persons.map((p)=>(p.id !== updatesID? p : updatePerson ))))
+           
+              } else {
+
+             setPersons(persons.concat(newOb))
+             personServices.create(newOb);
+    }
 
     setNewName("");
     setNumber("");

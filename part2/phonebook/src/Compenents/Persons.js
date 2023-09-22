@@ -11,12 +11,16 @@ const Persons=({persons,filters, setPersons})=>{
 
 
       const Person=({person, setPersons,persons})=>{
+        
         const DeleteOb = (event) => {
           event.preventDefault()
+
           if (window.confirm(`Delete ${person.name}?`)) {
+
             const F=persons.filter(pe=>pe.id !== person.id)
             personService.remove(person.id)
               .then(()=>setPersons(F))
+
           }
       }
 
