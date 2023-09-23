@@ -4,6 +4,7 @@ import PersonForm from './Compenents/PersonForm'
 import Persons from './Compenents/Persons'
 import personServices from './Services/person'
 import Notfication from './Compenents/Notification'
+import Message from './Compenents/Message'
 
 const App = () => {
  
@@ -12,6 +13,7 @@ const App = () => {
   const [newNumber, setNumber] =useState('')
   const [filter, setFilter] = useState('')
   const [notify, setNotify] = useState('')
+  const [message, setMessage] = useState('')
 
   useEffect(()=>{
     personServices.getAll()
@@ -54,7 +56,7 @@ const App = () => {
   
   return (
     <div>
-      <div>
+      <Message message={message}></Message>
       <Notfication notify={notify}></Notfication>
       <h2>Phonebook</h2>
       <Filter filters={filter} handleChange={handleChange(setFilter)}/>
@@ -63,8 +65,7 @@ const App = () => {
       <PersonForm addNewPerson={addNewPerson} newName={newName} newNumber={newNumber} handleChangen={handleChange(setNumber)} handleChange={handleChange(setNewName)}/>
 
       <h2>Numbers</h2>
-      <Persons persons={persons} filters={filter} setPersons={setPersons} />
-      </div>
+      <Persons persons={persons} filters={filter} setPersons={setPersons} setMessage={setMessage}/>
     </div>
   )
 }
