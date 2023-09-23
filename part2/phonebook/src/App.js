@@ -3,6 +3,7 @@ import Filter from './Compenents/Filter'
 import PersonForm from './Compenents/PersonForm'
 import Persons from './Compenents/Persons'
 import personServices from './Services/person'
+import Notfication from './Compenents/Notification'
 
 const App = () => {
  
@@ -10,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNumber] =useState('')
   const [filter, setFilter] = useState('')
+  const [notify, setNotify] = useState('')
 
   useEffect(()=>{
     personServices.getAll()
@@ -30,12 +32,18 @@ const App = () => {
              const updatesID = updatePerson.id
 
              personServices.update(updatesID, updatePerson)
-               .then(()=>setPersons(persons.map((p)=>(p.id !== updatesID? p : updatePerson ))))
-           
+               .then(()=>setPersons(persons.map((p)=>(p.id !== updatesID? p : updatePerson )))) ;
+             
+               setNotify(`${newOb.name}'s number is replaced`) ;
+               setTimeout(()=>setNotify(''), 4000) ;
               } else {
 
              setPersons(persons.concat(newOb))
              personServices.create(newOb);
+
+             setNotify(`${newOb.name} is added to the list`)
+             setTimeout(()=>setNotify(''), 4000)
+
     }
 
     setNewName("");
@@ -47,6 +55,7 @@ const App = () => {
   return (
     <div>
       <div>
+      <Notfication notify={notify}></Notfication>
       <h2>Phonebook</h2>
       <Filter filters={filter} handleChange={handleChange(setFilter)}/>
 
@@ -55,7 +64,7 @@ const App = () => {
 
       <h2>Numbers</h2>
       <Persons persons={persons} filters={filter} setPersons={setPersons} />
-    </div>
+      </div>
     </div>
   )
 }

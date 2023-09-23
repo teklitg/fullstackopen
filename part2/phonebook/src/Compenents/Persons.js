@@ -8,8 +8,6 @@ const Persons=({persons,filters, setPersons})=>{
           </div>
       }
 
-
-
       const Person=({person, setPersons,persons})=>{
         
         const DeleteOb = (event) => {
