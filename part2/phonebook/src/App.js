@@ -34,10 +34,11 @@ const App = () => {
              const updatesID = updatePerson.id
 
              personServices.update(updatesID, updatePerson)
-               .then(()=>setPersons(persons.map((p)=>(p.id !== updatesID? p : updatePerson )))) ;
-             
-               setNotify(`${newOb.name}'s number is replaced`) ;
-               setTimeout(()=>setNotify(''), 4000) ;
+               .then(()=>{setPersons(persons.map((p)=>(p.id !== updatesID? p : updatePerson )))
+                 setNotify(`${newOb.name}'s number is replaced`) ;
+                 setTimeout(()=>setNotify(''), 4000) ;})
+                 .catch(()=>{setMessage(`information of ${newOb.name} has already been removed `)
+                 setTimeout(()=>setMessage(''), 2000)})
               } else {
 
              setPersons(persons.concat(newOb))

@@ -7,7 +7,7 @@ const Message=({message})=>{
         fontSize : 25,
         padding: 10
     }
-    if (message=='') {
+    if (message==='') {
         
         return null
     }
