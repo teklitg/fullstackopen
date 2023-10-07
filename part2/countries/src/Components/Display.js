@@ -1,8 +1,6 @@
 import Coutries from './Coutries'
 
-
-
-const Display = ({filterdCountries}) =>{
+const Display = ({filterdCountries, setFilteredCountries}) =>{
 
     const long= filterdCountries.length
     
@@ -17,10 +15,10 @@ const Display = ({filterdCountries}) =>{
      } 
         
      if (1 < long && long <= 10) {
-          
+        
         return (
             <div>
-                <Coutries filterdCountries={filterdCountries}></Coutries>
+                <Coutries filterdCountries={filterdCountries} setFilteredCountries={setFilteredCountries}></Coutries>
             </div>
         )
      } 
@@ -37,8 +35,6 @@ const Display = ({filterdCountries}) =>{
                        {arrayLanguage.map(arrayLanguage => <li key={arrayLanguage}>{filterdCountries[0].languages[arrayLanguage]}</li>)}
                     </ul>
                     <img src={filterdCountries[0].flags.png} alt='flag' height='200' width='300' />
-
-                {console.log()}
             </div>
         )
      }
