@@ -34,15 +34,22 @@ app.get('/info', (request, response) => {
   response.send(`Phone book has info for ${persons.length} people </br> ${date}`)
 })
 
-app.get('/api/persons/:id', (request, response) => {
-  const Id = Number(request.params.id)
-  const per = persons.find(person =>  person.id === Id)
+//app.get('/api/persons/:id', (request, response) => {
+  //const Id = Number(request.params.id)
+ // const per = persons.find(person =>  person.id === Id)
   
-  if (per) {
-    response.json(per)
-  } else {
-    response.status(404)
-  }
+ // if (per) {
+  //  response.json(per)
+  //} else {
+  //  response.status(404)
+  //}
+//})
+
+app.delete('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  persons = persons.filter(person => person.id !== id)
+
+  response.status(204).end()
 })
 
 
