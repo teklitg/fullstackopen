@@ -56,12 +56,16 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
   const person = request.body
-  person.name ="Teklit Gebrerufael"
-  person.number= "251942972513"
+  
+ 
   const ID= ()=>{
    return Math.floor(Math.random() * (1000000-5))+5; 
   }
   person.id=ID()
+
+  if(!(person.name || person.number)){
+    return response.status(400).json({ error: 'name must be unique' })
+  }
   console.log(person)
   response.json(person)
 })
