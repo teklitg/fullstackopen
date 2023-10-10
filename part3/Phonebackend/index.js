@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
 let persons = [
   { 
     "id": 1,
@@ -34,16 +35,16 @@ app.get('/info', (request, response) => {
   response.send(`Phone book has info for ${persons.length} people </br> ${date}`)
 })
 
-//app.get('/api/persons/:id', (request, response) => {
-  //const Id = Number(request.params.id)
- // const per = persons.find(person =>  person.id === Id)
+app.get('/api/persons/:id', (request, response) => {
+  const Id = Number(request.params.id)
+ const per = persons.find(person =>  person.id === Id)
   
- // if (per) {
-  //  response.json(per)
-  //} else {
-  //  response.status(404)
-  //}
-//})
+  if (per) {
+    response.json(per)
+  } else {
+    response.status(404)
+  }
+})
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
@@ -52,6 +53,18 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
+
+app.post('/api/persons', (request, response) => {
+  const person = request.body
+  person.name ="Teklit Gebrerufael"
+  person.number= "251942972513"
+  const ID= ()=>{
+   return Math.floor(Math.random() * (1000000-5))+5; 
+  }
+  person.id=ID()
+  console.log(person)
+  response.json(person)
+})
 
 const PORT = 3001
 app.listen(PORT, () => {
