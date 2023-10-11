@@ -26,8 +26,6 @@ let persons = [
   }
 ]
 
-
-
 app.get('/api/persons', (request, response) => {
   response.json(persons)
 })
@@ -56,8 +54,10 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
-app.use(morgan('tiny'))
-
+morgan.token("body", (request, response)=>{
+               return JSON.stringify(request.body)
+           })
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 app.post('/api/persons', (request, response) => {
   const person = request.body
