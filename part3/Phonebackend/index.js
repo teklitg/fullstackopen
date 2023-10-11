@@ -1,8 +1,8 @@
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
-app.use(morgan('tiny'))
 app.use(express.json())
+
 let persons = [
   { 
     "id": 1,
@@ -25,6 +25,8 @@ let persons = [
     "number": "39-23-6423122"
   }
 ]
+
+
 
 app.get('/api/persons', (request, response) => {
   response.json(persons)
@@ -54,20 +56,25 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
+app.use(morgan('tiny'))
+
 
 app.post('/api/persons', (request, response) => {
   const person = request.body
-  
+  person.name="Lissa Marttinen"
+  person.number="040-243563"
  
   const ID= ()=>{
    return Math.floor(Math.random() * (1000000-5))+5; 
   }
   person.id=ID()
 
+  response.status(201).json({ message: 'User created successfully', user: person });
+
+
   if(!(person.name || person.number)){
     return response.status(400).json({ error: 'name must be unique' })
   }
-  console.log(person)
   response.json(person)
 })
 
