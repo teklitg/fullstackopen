@@ -8,7 +8,8 @@ const Persons=({persons,filters, setPersons, setMessage})=>{
           </div>
       }
 
-      const Person=({person, setPersons,persons, setMessage})=>{
+
+const Person=({person, setPersons,persons, setMessage})=>{
         
         const DeleteOb = (event) => {
           event.preventDefault()
