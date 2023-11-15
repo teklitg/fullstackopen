@@ -1,14 +1,22 @@
+
 const mongoose = require('mongoose')
+require('dotenv').config()
 
 
 const password = process.argv[2]
 const name = process.argv[3]
 const number = process.argv[4]
 
-const url =
-      `mongodb+srv://teklit:${password}@cluster0.9iy5i66.mongodb.net/?retryWrites=true&w=majority`
+const url = process.env.MONGODB_URI
+
 mongoose.set('strictQuery',false)
-mongoose.connect(url)
+mongoose.connect(url)  
+ .then(result => {
+    console.log('connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('error connecting to MongoDB:', error.message)
+  })
 
 const noteSchema = new mongoose.Schema({
   name: String,
@@ -31,11 +39,23 @@ if(process.argv.length == 5){
   })
 }
 
-if(process.argv.length == 3){
+
+
+if(process.argv.length == 9){
   Note.find({}).then(result => {
     result.forEach(note => {
       console.log(note)
     })
-    mongoose.connection.close()
+     mongoose.connection.close()
   })
 }
+
+noteSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
+
+module.exports = mongoose.model('Note', noteSchema)
