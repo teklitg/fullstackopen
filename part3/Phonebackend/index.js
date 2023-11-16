@@ -6,7 +6,6 @@ require('dotenv').config()
 const Note = require("./models/persons")
 const app = express()
 
-
 app.use(express.json())
 app.use(express.static('build'))
 app.use(cors())
@@ -35,6 +34,20 @@ let persons = [
     "number": "39-23-6423122"
   }
 ]
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+
+// this has to be the last loaded middleware.
+app.use(errorHandler)
+
 app.get('/api/persons', (request, response) => {
   Note.find({}).then(notes => {
     response.json(notes)
@@ -55,17 +68,17 @@ app.get('/api/persons/:id', (request, response) => {
     response.status(404)
   }
 })
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
   Note.findByIdAndDelete(request.params.id)
     .then(result => {
       response.status(204).end()
-    })
+    }).catch(error => next(error))
 })
 morgan.token("body", (request, response)=>{
                return JSON.stringify(request.body)
            })
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
 
 const name = process.argv[2]
 const number = process.argv[3]
