@@ -102,6 +102,21 @@ app.post('/api/persons', (request, response, next) => {
   }
 })
 
+app.put('/api/notes/:id', (request, response, next) => {
+  const body = request.body
+
+  const note = {
+    name: body.name,
+    number: body.number,
+  }
+
+  Note.findByIdAndUpdate(request.params.id, note, { new: true })
+    .then(updatedNote => {
+      response.json(updatedNote)
+      console.log("updated")
+    })
+    .catch(error => next(error))
+})
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
