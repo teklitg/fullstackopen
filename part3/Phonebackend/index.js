@@ -56,9 +56,10 @@ app.get('/api/persons/:id', (request, response) => {
   }
 })
 app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  persons = persons.filter(person => person.id !== id)
-  response.status(204).end()
+  Note.findByIdAndDelete(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
 })
 morgan.token("body", (request, response)=>{
                return JSON.stringify(request.body)
@@ -70,12 +71,6 @@ const name = process.argv[2]
 const number = process.argv[3]
 
 
-//const noteSchema = new mongoose.Schema({
-//  name: String,
-//  number: String,
-//})
-
-//const Note = mongoose.model('Note', noteSchema)
 
 const note = new Note({
   name: name,
