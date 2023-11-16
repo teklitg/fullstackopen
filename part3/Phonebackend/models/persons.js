@@ -39,17 +39,6 @@ if(process.argv.length == 5){
   })
 }
 
-
-
-if(process.argv.length == 9){
-  Note.find({}).then(result => {
-    result.forEach(note => {
-      console.log(note)
-    })
-     mongoose.connection.close()
-  })
-}
-
 noteSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()

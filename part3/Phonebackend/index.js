@@ -65,29 +65,32 @@ morgan.token("body", (request, response)=>{
            })
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 app.post('/api/persons', (request, response) => {
-  const person = request.body
-  person.name="Lissa Marttinen"
-  person.number="040-243563"
- 
-  const ID= ()=>{
-   return Math.floor(Math.random() * (1000000-5))+5; 
-  }
-  person.id=ID()
-  response.status(201).json({ message: 'User created successfully', user: person });
-  if(!(person.name || person.number)){
-    return response.status(400).json({ error: 'name must be unique' })
-  }
-  response.json(person)
+
+const name = process.argv[2]
+const number = process.argv[3]
+
+
+//const noteSchema = new mongoose.Schema({
+//  name: String,
+//  number: String,
+//})
+
+//const Note = mongoose.model('Note', noteSchema)
+
+const note = new Note({
+  name: name,
+  number: number,
 })
 
-//data base
-app.get('/api/notes', (request, response) => {
-
+  if(process.argv.length === 4){
+    note.save().then(result => {
+      console.log(`added ${name} number ${number} to phonebook`)
+    })
+  }
 })
-// upto this database
+
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server is delivering its best on port ${PORT}`)
 })
-
