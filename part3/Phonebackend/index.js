@@ -92,9 +92,6 @@ morgan.token("body", (request, response)=>{
            })
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 app.post('/api/persons', (request, response, next) => {
-
-
-
   if(process.argv.length === 4){
     note.save().then(result => {
       console.log(`added ${name} number ${number} to phonebook`)
