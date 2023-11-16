@@ -10,7 +10,13 @@ app.use(express.json())
 app.use(express.static('build'))
 app.use(cors())
 
+const name = process.argv[2]
+const number = process.argv[3]
 
+const note = new Note({
+  name: name,
+  number: number,
+})
 
 let persons = [
   { 
@@ -56,17 +62,24 @@ app.get('/api/persons', (request, response) => {
 app.get('/info', (request, response) => {
   const date= new Date
   console.log(date)
-  response.send(`Phone book has info for ${persons.length} people </br> ${date}`)
+  Note.find({}).then((peoples=>{
+    response.send(`Phone book has info for ${peoples.length} people </br> ${date}`)
+  }))
+
 })
-app.get('/api/persons/:id', (request, response) => {
-  const Id = Number(request.params.id)
+app.get('/api/persons/:id', (request, response, next) => {
+ const Id = Number(request.params.id)
  const per = persons.find(person =>  person.id === Id)
   
-  if (per) {
-    response.json(per)
-  } else {
-    response.status(404)
-  }
+  Note.findById(request.params.id)
+  .then(person => {
+    if (person) {
+      response.json(person)
+    } else {
+      response.status(404).end()
+    }
+  })
+  .catch(error => next(error))
 })
 app.delete('/api/persons/:id', (request, response, next) => {
   Note.findByIdAndDelete(request.params.id)
@@ -80,15 +93,7 @@ morgan.token("body", (request, response)=>{
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 app.post('/api/persons', (request, response, next) => {
 
-const name = process.argv[2]
-const number = process.argv[3]
 
-
-
-const note = new Note({
-  name: name,
-  number: number,
-})
 
   if(process.argv.length === 4){
     note.save().then(result => {
