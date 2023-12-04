@@ -24,12 +24,12 @@ userRouter.get('/', (request, response) => {
         passwordHash,
       })
 
-      console.log(user)
       
      const savUser= await user.save()
       console.log(savUser)
       response.status(201).json(savUser)
   
   })
+
 
 module.exports = userRouter
