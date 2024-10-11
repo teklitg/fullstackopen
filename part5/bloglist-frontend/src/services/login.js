@@ -6,4 +6,10 @@ const logIn = (Obj) => {
   return request.then(response => response.data)
 }
 
+//let token = null;
+
+//const setToken = newToken => {
+//  token = `Bearer ${newToken}`;
+//};
+
 export default { logIn }

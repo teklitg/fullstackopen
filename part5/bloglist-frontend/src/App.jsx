@@ -9,6 +9,16 @@ const App = () => {
   const [username, setUsername] = useState("");  
   const [password, setPassword] = useState("");
 
+  // Check local storage for logged-in user on initial load
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+     // blogService.setToken(user.token);  // Set token for authenticated requests
+    }
+  }, []);
+
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
@@ -31,13 +41,22 @@ const App = () => {
     try {
       const returnedUser = await logInService.logIn(credentials);
       setUser(returnedUser);
-      console.log(returnedUser)
+
+      // Save user to local storage to keep login persistent
+      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(returnedUser));
+      
+      // blogService.setToken(returnedUser.token);  // Set token for authenticated requests
+      
       setUsername('');  // Clear input fields after successful login
       setPassword('');
-
     } catch (error) {
       console.error('Login failed:', error);
     }
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    window.localStorage.removeItem('loggedBlogAppUser');  // Clear user from local storage on logout
   };
 
   if (user === null) {
@@ -73,7 +92,8 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <div>
-        {`${user.name} logged in`}
+        {`${user.name} logged in`} 
+        <button onClick={handleLogout}>Logout</button>
       </div>
       {blogs.map(blog => 
         <Blog key={blog.id} blog={blog} />
