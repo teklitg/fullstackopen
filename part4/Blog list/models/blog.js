@@ -1,14 +1,8 @@
 const mongoose = require('mongoose')
 
 const schema = mongoose.Schema({
-  title: { 
-    type: String,
-    required: true
-  },
-  author: { 
-    type: String,
-    required: true
-  },
+  title: String,
+  author: String,
   url: String,
   likes: Number,
   user: {
@@ -16,6 +10,7 @@ const schema = mongoose.Schema({
     ref: 'User'
   }
 })
+
 
 schema.set('toJSON', {
   transform: (document, returnedObject) => {
