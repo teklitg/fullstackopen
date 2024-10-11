@@ -31,6 +31,39 @@ app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 
+const bcrypt = require("bcrypt")
+const User = require("./models/user")
+app.get("/t", async (request, response) => {
+
+  const newObj = {
+    username : "teklit",
+    name : "teklit",
+    password : "mariam",
+  }
+
+  const { username, name, password} = newObj
+
+  if (!password || password.length < 3) {
+    return response.status(400).json({ error: 'password missing or too short' })
+  }
+
+
+  const saltRounds = 10
+  const passwordHash = await bcrypt.hash(password, saltRounds)
+
+  const user = new User({
+    username,
+    name,
+    passwordHash,
+  })
+
+  const savedUser = await user.save()
+
+  console.log("user saved")
+
+  response.status(201).json(savedUser)
+})
+
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 
