@@ -40,6 +40,8 @@ const getTokenFrom = request => {
 const userExtractor = async (request, response, next) => {
   const token = getTokenFrom(request)
 
+  console.log(token)
+
   if (!token) {
     return response.status(401).json({ error: 'token missimg' })
   }
