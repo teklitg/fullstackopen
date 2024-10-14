@@ -2,12 +2,16 @@ import { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import blogService from './services/blogs';
 import logInService from './services/login';
+import axios from 'axios';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");  
   const [password, setPassword] = useState("");
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
 
   // Check local storage for logged-in user on initial load
   useEffect(() => {
@@ -59,6 +63,32 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogAppUser');  // Clear user from local storage on logout
   };
 
+  const handlePost = async (e) => {
+    e.preventDefault();
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${user.token}` }  // Assuming you are using Bearer token authentication
+      };
+  
+      const response = await axios.post("http://localhost:300/api/blogs", {
+        title: title,
+        author: author,
+        url: url,
+      }, config);
+  
+      console.log("Blog posted successfully", response.data);
+      setTitle('');  // Clear input fields after successful post
+      setAuthor('');
+      setUrl('');
+      
+      // Optionally, you can update the blog list after the post
+      setBlogs([...blogs, response.data]);
+    } catch (error) {
+      console.error("Error posting blog:", error);
+    }
+  };
+  
+
   if (user === null) {
     return (
       <div>
@@ -94,7 +124,36 @@ const App = () => {
       <div>
         {`${user.name} logged in`} 
         <button onClick={handleLogout}>Logout</button>
+        <form onSubmit={handlePost}>
+        <h2>create new</h2>
+        <label>
+          title: 
+          <input 
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          type="text" />
+        </label>
+        <br />
+        <label>
+          author:
+          <input 
+          value={author}
+          onChange={(e) => setAuthor(e.target.value)}
+          type="text" />
+        </label>
+        <br />
+        <label>
+          url: 
+          <input 
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          type="text" />
+        </label>
+        <br />
+        <button>create</button>
+        </form>
       </div>
+        
       {blogs.map(blog => 
         <Blog key={blog.id} blog={blog} />
       )}
