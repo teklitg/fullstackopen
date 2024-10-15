@@ -1,29 +1,25 @@
-import React, { useRef } from 'react'
-import { useDispatch } from 'react-redux'
-import { addAnecdote } from '../reducers/anecdoteReducer'
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { addAnecdoteWithNotification } from '../reducers/anecdoteReducer'; // Use the new action
 
 const AnecdoteForm = () => {
-  const dispatch = useDispatch()
-  const inputRef = useRef()
+  const dispatch = useDispatch();
+  const [content, setContent] = React.useState('');
 
-  const addNewAnecdote = (event) => {
-    event.preventDefault()
-    const content = inputRef.current.value
+  const handleSubmit = (event) => {
+    event.preventDefault();
     if (content) {
-      dispatch(addAnecdote(content))
-      inputRef.current.value = ''
+      dispatch(addAnecdoteWithNotification(content)); // Use the thunk
+      setContent(''); // Clear input
     }
-  }
+  };
 
   return (
-    <div>
-      <h2>Create new</h2>
-      <form onSubmit={addNewAnecdote}>
-        <div><input ref={inputRef} /></div>
-        <button type="submit">create</button>
-      </form>
-    </div>
-  )
-}
+    <form onSubmit={handleSubmit}>
+      <div><input value={content} onChange={(e) => setContent(e.target.value)} /></div>
+      <button type="submit">create</button>
+    </form>
+  );
+};
 
-export default AnecdoteForm
+export default AnecdoteForm;

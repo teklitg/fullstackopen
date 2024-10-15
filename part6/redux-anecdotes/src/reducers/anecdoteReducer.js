@@ -1,4 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { setNotificationWithTimeout } from './notificationsReducer'; // Import notification actions
 
 // Utility function to generate unique IDs
 const getId = () => (100000 * Math.random()).toFixed(0);
@@ -59,6 +60,22 @@ const anecdoteSlice = createSlice({
 
 // Export action creators
 export const { voteAnecdote, addAnecdote } = anecdoteSlice.actions;
+
+// Create a thunk for adding an anecdote with notification
+export const addAnecdoteWithNotification = (content) => {
+  return async dispatch => {
+    dispatch(addAnecdote(content)); // Dispatch add anecdote action
+    dispatch(setNotificationWithTimeout(`You added "${content}"`, 5)); // Set notification
+  };
+};
+
+// Create a thunk for voting with notification
+export const voteAnecdoteWithNotification = (id) => {
+  return async dispatch => {
+    dispatch(voteAnecdote(id)); // Dispatch vote anecdote action
+    dispatch(setNotificationWithTimeout(`You voted for anecdote with id ${id}`, 5)); // Set notification
+  };
+};
 
 // Selector for visible anecdotes
 export const selectVisibleAnecdotes = createSelector(
