@@ -1,25 +1,16 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { addAnecdote, voteAnecdote } from './reducers/anecdoteReducer'
+import { voteAnecdote } from './reducers/anecdoteReducer'
+import AnecdoteForm from './components/AnecdoteForm'
 
 const App = () => {
   const anecdotes = useSelector(state => 
     [...state].sort((a, b) => b.votes - a.votes)  // Sorting by votes
   )
   const dispatch = useDispatch()
-  const inputRef = useRef()
 
   const vote = (id) => {
     dispatch(voteAnecdote(id))
-  }
-
-  const addNewAnecdote = (event) => {
-    event.preventDefault()
-    const content = inputRef.current.value
-    if (content) {
-      dispatch(addAnecdote(content))
-      inputRef.current.value = ''
-    }
   }
 
   return (
@@ -36,11 +27,9 @@ const App = () => {
           </div>
         </div>
       )}
-      <h2>Create new</h2>
-      <form onSubmit={addNewAnecdote}>
-        <div><input ref={inputRef} /></div>
-        <button type="submit">create</button>
-      </form>
+      
+      {/* Render the AnecdoteForm component here */}
+      <AnecdoteForm />
     </div>
   )
 }
