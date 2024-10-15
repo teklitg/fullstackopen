@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { addAnecdote, voteAnecdote } from './reducers/anecdoteReducer';
+import React, { useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { addAnecdote, voteAnecdote } from './reducers/anecdoteReducer'
 
 const App = () => {
   const anecdotes = useSelector(state => 
@@ -45,4 +45,4 @@ const App = () => {
   )
 }
 
-export default App;
+export default App

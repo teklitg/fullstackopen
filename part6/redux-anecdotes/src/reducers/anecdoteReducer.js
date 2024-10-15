@@ -1,3 +1,4 @@
+// Initial state and helper functions
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -19,30 +20,11 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const VOTE = 'VOTE';
+// Action Types
+const VOTE = 'VOTE'
+const ADD_ANECDOTE = 'ADD_ANECDOTE'
 
-export const voteAnecdote = (id) => {
-  return {
-    type: VOTE,
-    data: { id }
-  }
-}
-
-const ADD_ANECDOTE = 'ADD_ANECDOTE';
-
-
-export const addAnecdote = (content) => {
-  return {
-    type: ADD_ANECDOTE,
-    data: {
-      content,
-      id: getId(),
-      votes: 0
-    }
-  }
-}
-
-
+// Reducer function
 const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
@@ -61,5 +43,23 @@ const reducer = (state = initialState, action) => {
   }
 }
 
+// Action Creators
+export const voteAnecdote = (id) => {
+  return {
+    type: VOTE,
+    data: { id }
+  }
+}
 
-export default reducer;
+export const addAnecdote = (content) => {
+  return {
+    type: ADD_ANECDOTE,
+    data: {
+      content,
+      id: getId(),
+      votes: 0
+    }
+  }
+}
+
+export default reducer
